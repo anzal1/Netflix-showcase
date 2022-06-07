@@ -7,6 +7,7 @@ import useAuth from '../hooks/useAuth'
 import { loadCheckout } from '../lib/stripe'
 import Table from './Table'
 import Loader from './Loader'
+import toast from 'react-hot-toast'
 
 interface Props {
   products: Product[]
@@ -44,7 +45,13 @@ function Plans({ products }: Props) {
         </Link>
         <button
           className="text-lg font-medium hover:underline"
-          onClick={logout}
+          onClick={() => {
+            toast.promise(logout(), {
+              loading: 'Logging You out',
+              success: 'Logged out',
+              error: 'Error in Logging',
+            })
+          }}
         >
           Sign Out
         </button>

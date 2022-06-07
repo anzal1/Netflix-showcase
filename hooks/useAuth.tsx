@@ -8,6 +8,7 @@ import {
 
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import toast from 'react-hot-toast'
 import { auth } from '../firebase'
 
 interface IAuth {
@@ -60,26 +61,34 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const signUp = async (email: string, password: string) => {
     setLoading(true)
-
+    toast.loading('Signing up...', { duration: 500 })
     await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
         router.push('/')
+        toast.success('Successfully signed up!')
+
         setLoading(false)
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        toast.error(error.message)
+      })
       .finally(() => setLoading(false))
   }
 
   const signIn = async (email: string, password: string) => {
     setLoading(true)
+    toast.loading('Signing in...', { duration: 500 })
     await signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         setUser(userCredential.user)
         router.push('/')
+        toast.success('Successfully signed in!')
         setLoading(false)
       })
-      .catch((error) => alert(error.message))
+      .catch((error) => {
+        toast.error(error.message)
+      })
       .finally(() => setLoading(false))
   }
 

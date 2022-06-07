@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
+import toast from 'react-hot-toast'
 import Membership from '../components/Membership'
 import useAuth from '../hooks/useAuth'
 import useSubscription from '../hooks/useSubscription'
@@ -79,7 +80,13 @@ function Account({ products }: Props) {
           <h4 className="text-lg text-[gray]">Settings</h4>
           <p
             className="col-span-3 cursor-pointer text-blue-500 hover:underline"
-            onClick={logout}
+            onClick={() => {
+              toast.promise(logout(), {
+                loading: 'Logging You out',
+                success: 'Logged out',
+                error: 'Error in Logging',
+              })
+            }}
           >
             Sign out of all devices
           </p>
